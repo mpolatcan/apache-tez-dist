@@ -38,10 +38,12 @@ jobs:
           sudo make install
           sudo ldconfig
       - name: Install Protobuf
+        if: steps.protobuf-build-cache.outputs.cache-hit == 'true'
         run: |
           cd protobuf-2.5.0
           sudo make install
           sudo ldconfig
+          protoc
       #- run: wget https://downloads.apache.org/tez/${{matrix.tez_version}}/apache-tez-${{matrix.tez_version}}-src.tar.gz
       #- run: tar -xvzf apache-tez-${{matrix.tez_version}}-src.tar.gz
       #- run: |
