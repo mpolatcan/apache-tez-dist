@@ -1,0 +1,17 @@
+name: apache-tez-dist
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-base-image:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tez_version: [0.9.2]
+    steps:
+      - uses: actions/checkout@v2
+      - run: wget https://downloads.apache.org/tez/${{matrix.tez_version}}/apache-tez-${{matrix.tez_version}}-src.tar.gz
+      - run: tar -xvzf apache-tez-${{matrix.tez_version}}-src.tar.gz
