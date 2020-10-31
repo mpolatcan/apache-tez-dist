@@ -47,10 +47,8 @@ jobs:
         run: wget https://downloads.apache.org/tez/${{matrix.tez_version}}/apache-tez-${{matrix.tez_version}}-src.tar.gz
       - name: Extract Tez Source Code
         run: tar -xvzf apache-tez-${{matrix.tez_version}}-src.tar.gz
-      - name: Build and Deploy Tez Package
+      - name: Build Tez Package
         run: |
           cd apache-tez-${{matrix.tez_version}}-src
           mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true
-          mvn -B deploy
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          ls -l
