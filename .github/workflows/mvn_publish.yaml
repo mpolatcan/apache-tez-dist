@@ -24,7 +24,7 @@ jobs:
         with:
           path: protobuf-2.5.0
           key: ${{runner.os}}-protobuf-build
-      - name: Build Protobuf
+      - name: Build and Install Protobuf
         if: steps.protobuf-build-cache.outputs.cache-hit != 'true'
         run: |
           sudo apt-get -y install autoconf automake libtool curl make g++ unzip
@@ -37,17 +37,20 @@ jobs:
           make check
           sudo make install
           sudo ldconfig
-      - name: Install Protobuf
+      - name: Install Protobuf from Cache
         if: steps.protobuf-build-cache.outputs.cache-hit == 'true'
         run: |
           cd protobuf-2.5.0
           sudo make install
           sudo ldconfig
-      - run: wget https://downloads.apache.org/tez/${{matrix.tez_version}}/apache-tez-${{matrix.tez_version}}-src.tar.gz
-      - run: tar -xvzf apache-tez-${{matrix.tez_version}}-src.tar.gz
-      - run: |
+      - name: Download Tez Source Code
+        run: wget https://downloads.apache.org/tez/${{matrix.tez_version}}/apache-tez-${{matrix.tez_version}}-src.tar.gz
+      - name: Extract Tez Source Code
+        run: tar -xvzf apache-tez-${{matrix.tez_version}}-src.tar.gz
+      - name: Build and Deploy Tez Package
+        run: |
           cd apache-tez-${{matrix.tez_version}}-src
           mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true
-          mvn deploy -Dregistry=https://maven.pkg.github.com/mpolatcan -Dtoken=$GITHUB_TOKEN
+          mvn -B deploy
         env:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
