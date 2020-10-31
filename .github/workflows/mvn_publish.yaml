@@ -22,6 +22,13 @@ jobs:
           sudo apt-get -y install autoconf automake libtool curl make g++ unzip
           wget https://github.com/protocolbuffers/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz
           tar -xvzf protobuf-2.5.0.tar.gz
+          cd protobuf-2.5.0
+          ./autogen.sh
+          ./configure
+          make
+          make check
+          sudo make install
+          sudo ldconfig
       #- run: wget https://downloads.apache.org/tez/${{matrix.tez_version}}/apache-tez-${{matrix.tez_version}}-src.tar.gz
       #- run: tar -xvzf apache-tez-${{matrix.tez_version}}-src.tar.gz
       #- run: |
