@@ -43,9 +43,8 @@ jobs:
           cd protobuf-2.5.0
           sudo make install
           sudo ldconfig
-          protoc
-      #- run: wget https://downloads.apache.org/tez/${{matrix.tez_version}}/apache-tez-${{matrix.tez_version}}-src.tar.gz
-      #- run: tar -xvzf apache-tez-${{matrix.tez_version}}-src.tar.gz
-      #- run: |
-      #    cd apache-tez-${{matrix.tez_version}}-src
-      #    mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true
+      - run: wget https://downloads.apache.org/tez/${{matrix.tez_version}}/apache-tez-${{matrix.tez_version}}-src.tar.gz
+      - run: tar -xvzf apache-tez-${{matrix.tez_version}}-src.tar.gz
+      - run: |
+          cd apache-tez-${{matrix.tez_version}}-src
+          mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true
