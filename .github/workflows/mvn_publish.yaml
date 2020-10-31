@@ -13,11 +13,19 @@ jobs:
         tez_version: [0.9.2]
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-java@v1
+      - name: Setup Java
+        uses: actions/setup-java@v1
         with:
           java-version: '8'
           java-package: 'jdk'
+      - name: Cache Protobuf Build
+        id: protobuf-build-cache
+        uses: actions/cache@v2
+        with:
+          path: protobuf-2.5.0
+          key: ${{runner.os}}-protobuf-build
       - name: Build Protobuf
+        if: steps.protobuf-build-cache.outputs.cache-hit != 'true'
         run: |
           sudo apt-get -y install autoconf automake libtool curl make g++ unzip
           wget https://github.com/protocolbuffers/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz
@@ -27,6 +35,11 @@ jobs:
           ./configure
           make
           make check
+          sudo make install
+          sudo ldconfig
+      - name: Install Protobuf
+        run: |
+          cd protobuf-2.5.0
           sudo make install
           sudo ldconfig
       #- run: wget https://downloads.apache.org/tez/${{matrix.tez_version}}/apache-tez-${{matrix.tez_version}}-src.tar.gz
