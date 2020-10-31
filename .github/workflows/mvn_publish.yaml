@@ -17,9 +17,11 @@ jobs:
         with:
           java-version: '8'
           java-package: 'jdk'
-      - uses: arduino/setup-protoc@v1
-        with:
-          version: '2.5.0'
+      - name: Build Protobuf
+        run: |
+          sudo apt-get -y install autoconf automake libtool curl make g++ unzip
+          wget https://github.com/protocolbuffers/protobuf/releases/download/v2.5.0/protobuf-all-2.5.0.tar.gz
+          tar -xvzf protobuf-all-2.5.0.tar.gz
       - run: wget https://downloads.apache.org/tez/${{matrix.tez_version}}/apache-tez-${{matrix.tez_version}}-src.tar.gz
       - run: tar -xvzf apache-tez-${{matrix.tez_version}}-src.tar.gz
       - run: |
