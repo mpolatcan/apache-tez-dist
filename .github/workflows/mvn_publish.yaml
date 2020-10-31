@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v2
       - run: wget https://downloads.apache.org/tez/${{matrix.tez_version}}/apache-tez-${{matrix.tez_version}}-src.tar.gz
       - run: tar -xvzf apache-tez-${{matrix.tez_version}}-src.tar.gz
-      - run: sudo apt-get -y install protobuf-compiler
+      - run: sudo apt-get -y install protobuf-compiler-2.5.0
       - run: |
           cd apache-tez-${{matrix.tez_version}}-src
           mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true
