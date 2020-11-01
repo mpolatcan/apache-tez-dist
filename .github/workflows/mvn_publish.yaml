@@ -52,6 +52,8 @@ jobs:
         run: |
           cd apache-tez-${{matrix.tez_version}}-src
           HADOOP_VERSION=${{matrix.hadoop_version}}
+          echo $HADOOP_VERSION
           sed "s/\${hadoop.version}/${HADOOP_VERSION}/g" pom.xml > pom.xml
+          cat pom.xml
           mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true
           ls -l
