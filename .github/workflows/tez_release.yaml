@@ -73,7 +73,7 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: ./tez-dist/target/tez-${{matrix.tez_version}}-minimal.tar.gz
+          asset_path: apache-tez-${{matrix.tez_version}}-src/tez-dist/target/tez-${{matrix.tez_version}}-minimal.tar.gz
           asset_name: tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}-minimal.tar.gz
           asset_content_type: application/tar+gzip
       - name: Upload Tez tarball to release as asset
@@ -82,6 +82,6 @@ jobs:
           GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
           upload_url: ${{steps.create_release.outputs.upload_url}}
-          asset_path: ./tez-dist/target/tez-${{matrix.tez_version}}.tar.gz
+          asset_path: apache-tez-${{matrix.tez_version}}-src/tez-dist/target/tez-${{matrix.tez_version}}.tar.gz
           asset_name: tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}.tar.gz
           asset_content_type: application/tar+gzip
