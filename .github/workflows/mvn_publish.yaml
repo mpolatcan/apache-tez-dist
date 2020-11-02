@@ -15,6 +15,8 @@ jobs:
         hadoop_version: [3.2.1, 3.1.4, 2.10.1, 2.9.2, 2.8.5]
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
       - name: Setup Java
         uses: actions/setup-java@v1
         with:
@@ -59,8 +61,7 @@ jobs:
           rm -r apache-tez-${{matrix.tez_version}}-src
           git config user.name mpolatcan
           git config user.email mutlupolatcan@gmail.com
-          git fetch
-          git checkout -b tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
+          git checkout -B tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
           git add tez-${{matrix.tez_version}}.tar.gz tez-${{matrix.tez_version}}-minimal.tar.gz
           git commit -m "tez version ${{matrix.tez_version}} minimal and standard tarballs added"
           git push origin tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
