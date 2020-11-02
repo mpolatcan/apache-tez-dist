@@ -3,19 +3,22 @@ name: tez-release
 on:
   push:
     branches:
-      - 'tez/**'
+      - 'tez-**'
 
 jobs:
   tez-release:
     runs-on: ubuntu-latest
     steps:
+      - name: Get Branch Name
+        id: vars
+        run: echo ::set-output name=branch_name::${GITHUB_REF#refs/*/}
       - name: Create Release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{secrets.PAT}}
         with:
-          tag_name: ${{github.ref}}
-          release_name: ${{github.ref}}
+          tag_name: ${{steps.vars.outputs.branch_name}}
+          release_name: Release ${{steps.vars.outputs.branch_name}}
           draft: false
           prerelease: false
         continue-on-error: true
