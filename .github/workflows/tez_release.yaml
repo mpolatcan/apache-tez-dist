@@ -2,6 +2,8 @@ name: tez-release
 
 on:
   push:
+    branches:
+      - '**'
     branches-ignore:
       - master
 
