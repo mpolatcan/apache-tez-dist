@@ -60,6 +60,6 @@ jobs:
           git config user.name mpolatcan
           git config user.email mutlupolatcan@gmail.com
           git checkout -b tez-${{matrix.tez_version}}
-          git add .
+          git add tez-${{matrix.tez_version}}.tar.gz tez-${{matrix.tez_version}}-minimal.tar.gz
           git commit -m "tez version ${{matrix.tez_version}} minimal and standard tarballs added"
           git push
