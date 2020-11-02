@@ -3,9 +3,7 @@ name: tez-release
 on:
   push:
     branches:
-      - '**'
-    branches-ignore:
-      - master
+      - 'tez*'
 
 jobs:
   tez-release:
