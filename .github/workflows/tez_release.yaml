@@ -3,7 +3,7 @@ name: tez-release
 on:
   push:
     branches:
-      - 'tez-*.*.*-hadoop-*.*.*'
+      - 'tez-**'
 
 jobs:
   tez-release:
