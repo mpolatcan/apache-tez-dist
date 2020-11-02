@@ -59,6 +59,8 @@ jobs:
           cp ./tez-dist/target/tez-${{matrix.tez_version}}-minimal.tar.gz ../
           cd ../
           rm -r apache-tez-${{matrix.tez_version}}-src
+          git config --global user.name mpolatcan
+          git config --global user.email mutlupolatcan@gmail.com
           git checkout -B tez/${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
           git add tez-${{matrix.tez_version}}.tar.gz tez-${{matrix.tez_version}}-minimal.tar.gz
           git commit -m "tez version ${{matrix.tez_version}} minimal and standard tarballs added"
