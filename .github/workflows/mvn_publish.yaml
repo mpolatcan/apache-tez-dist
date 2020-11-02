@@ -62,4 +62,4 @@ jobs:
           git checkout -b tez-${{matrix.tez_version}}
           git add tez-${{matrix.tez_version}}.tar.gz tez-${{matrix.tez_version}}-minimal.tar.gz
           git commit -m "tez version ${{matrix.tez_version}} minimal and standard tarballs added"
-          git push
+          git push origin tez-${{matrix.tez_version}}
