@@ -61,8 +61,9 @@ jobs:
           rm -r apache-tez-${{matrix.tez_version}}-src
       - uses: actions/checkout@v2
         with:
-          name: tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
+          ref: tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
       - run: |
+          ls -l
           git config user.name mpolatcan
           git config user.email mutlupolatcan@gmail.com
           git add tez-${{matrix.tez_version}}.tar.gz tez-${{matrix.tez_version}}-minimal.tar.gz
