@@ -3,10 +3,10 @@ name: tez-release
 on:
   push:
     branches:
-      - tez-*-hadoop-*
+      - 'tez-*.*.*-hadoop-*.*.*'
 
 jobs:
-  tez-build:
+  tez-release:
     runs-on: ubuntu-latest
     steps:
       - name: Create Release
