@@ -3,22 +3,85 @@ name: tez-release
 on:
   push:
     branches:
-      - 'tez-**'
+      - master
+
 
 jobs:
-  tez-release:
+  tez-build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tez_version: [0.9.2]
+        hadoop_version: [3.2.1, 3.1.4, 2.10.1, 2.9.2, 2.8.5]
     steps:
-      - name: Get Branch Name
-        id: vars
-        run: echo ::set-output name=branch_name::${GITHUB_REF#refs/*/}
-      - name: Create Release
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: '0'
+          token: ${{secrets.GITHUB_TOKEN}}
+      - name: Setup Java
+        uses: actions/setup-java@v1
+        with:
+          java-version: '8'
+          java-package: 'jdk'
+      - name: Cache Protobuf Build
+        id: protobuf-build-cache
+        uses: actions/cache@v2
+        with:
+          path: protobuf-2.5.0
+          key: ${{runner.os}}-protobuf-build
+      - name: Build and Install Protobuf
+        if: steps.protobuf-build-cache.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get -y install autoconf automake libtool curl make g++ unzip
+          wget https://github.com/protocolbuffers/protobuf/releases/download/v2.5.0/protobuf-2.5.0.tar.gz
+          tar -xvzf protobuf-2.5.0.tar.gz
+          cd protobuf-2.5.0
+          ./autogen.sh
+          ./configure
+          make
+          make check
+          sudo make install
+          sudo ldconfig
+      - name: Install Protobuf from Cache
+        if: steps.protobuf-build-cache.outputs.cache-hit == 'true'
+        run: |
+          cd protobuf-2.5.0
+          sudo make install
+          sudo ldconfig
+      - name: Download Tez Source Code
+        run: wget https://downloads.apache.org/tez/${{matrix.tez_version}}/apache-tez-${{matrix.tez_version}}-src.tar.gz
+      - name: Extract Tez Source Code
+        run: tar -xvzf apache-tez-${{matrix.tez_version}}-src.tar.gz
+      - name: Build Tez Package
+        run: |
+          cd apache-tez-${{matrix.tez_version}}-src
+          mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true -Phadoop28 -Dhadoop.version=${{matrix.hadoop_version}}
+      - name: Create Tez Release
+        id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{secrets.PAT}}
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
         with:
-          tag_name: ${{steps.vars.outputs.branch_name}}
-          release_name: Release ${{steps.vars.outputs.branch_name}}
+          tag_name: tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
+          release_name: Release tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
           draft: false
           prerelease: false
         continue-on-error: true
+      - name: Upload Tez Minimal tarball to release as asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: ./tez-dist/target/tez-${{matrix.tez_version}}-minimal.tar.gz
+          asset_name: tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}-minimal.tar.gz
+          asset_content_type: application/tar+gzip
+      - name: Upload Tez tarball to release as asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+        with:
+          upload_url: ${{steps.create_release.outputs.upload_url}}
+          asset_path: ./tez-dist/target/tez-${{matrix.tez_version}}.tar.gz
+          asset_name: tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}.tar.gz
+          asset_content_type: application/tar+gzip
