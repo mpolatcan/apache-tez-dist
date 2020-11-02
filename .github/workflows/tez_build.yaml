@@ -1,4 +1,4 @@
-name: apache-tez-dist
+name: tez-build
 
 on:
   push:
@@ -61,18 +61,8 @@ jobs:
           rm -r apache-tez-${{matrix.tez_version}}-src
           git config user.name mpolatcan
           git config user.email mutlupolatcan@gmail.com
-          git checkout -B ${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
+          git checkout -B tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
           git add tez-${{matrix.tez_version}}.tar.gz tez-${{matrix.tez_version}}-minimal.tar.gz
           git commit -m "tez version ${{matrix.tez_version}} minimal and standard tarballs added"
-          git push origin ${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
-        continue-on-error: true
-      - name: Create Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-        with:
-          tag_name: tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
-          release_name: Release tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
-          draft: false
-          prerelease: false
+          git push origin tez-${{matrix.tez_version}}-hadoop-${{matrix.hadoop_version}}
         continue-on-error: true
