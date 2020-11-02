@@ -2,8 +2,8 @@ name: tez-release
 
 on:
   push:
-    branches:
-      - 'tez-**'
+    branches-ignore:
+      - master
 
 jobs:
   tez-release:
