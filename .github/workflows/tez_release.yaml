@@ -90,7 +90,7 @@ jobs:
           sed -i "/<module>tez-ui<\/module>/d" pom.xml
           sed -i "/<module>tez-ui2<\/module>/d" pom.xml
           mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true${{matrix.build_profile}}-Dhadoop.version=${{matrix.hadoop_version}}
-          ls -l hadoop-dist
+          ls -l hadoop/hadoop-dist
       - name: Create Tez Release
         id: create_release
         uses: actions/create-release@v1
