@@ -35,8 +35,16 @@ jobs:
             build_profile: ' '
           - tez_version: 0.8.5
             hadoop_version: 3.2.1
+          - tez_version: 0.8.5
+            hadoop_version: 3.1.4
+          - tez_version: 0.8.5
+            hadoop_version: 2.10.1
+          - tez_version: 0.7.1
+            hadoop_version: 3.2.1
           - tez_version: 0.7.1
             hadoop_version: 3.1.4
+          - tez_version: 0.7.1
+            hadoop_version: 2.10.1
     steps:
       - uses: actions/checkout@v2
         with:
@@ -79,6 +87,8 @@ jobs:
       - name: Build Tez Package
         run: |
           cd apache-tez-${{matrix.tez_version}}-src
+          sed -i "/<module>tez-ui<\/module>/d" pom.xml
+          sed -i "/<module>tez-ui2<\/module>/d" pom.xml
           mvn clean package -DskipTests=true -Dmaven.javadoc.skip=true${{matrix.build_profile}}-Dhadoop.version=${{matrix.hadoop_version}}
       - name: Create Tez Release
         id: create_release
