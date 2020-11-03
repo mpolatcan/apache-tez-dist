@@ -7,8 +7,6 @@ versions and releases them.
 
 ## Versions
 
-- 0.9.2-hadoop-3.2.1
-- 0.9.2-hadoop-3.1.4
 - 0.9.2-hadoop-2.10.1
 - 0.9.2-hadoop-2.9.2
 - 0.9.2-hadoop-2.8.5
