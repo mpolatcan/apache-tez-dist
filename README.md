@@ -12,9 +12,7 @@ versions and releases them.
 - 0.9.2-hadoop-2.10.1
 - 0.9.2-hadoop-2.9.2
 - 0.9.2-hadoop-2.8.5
-- 0.8.5-hadoop-2.10.1
 - 0.8.5-hadoop-2.9.2
 - 0.8.5-hadoop-2.8.5
-- 0.7.1-hadoop-2.10.1
 - 0.7.1-hadoop-2.9.2
 - 0.7.1-hadoop-2.8.5
